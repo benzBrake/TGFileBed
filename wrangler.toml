@@ -1,0 +1,27 @@
+# Top-level configuration
+name = "tg-filebed"
+main = "src/index.js"
+compatibility_date = "2023-10-30"
+
+# D1 database binding
+[[d1_databases]]
+binding = "DB"
+database_name = "tg-filebed-db"
+database_id = "" # This will be filled in after the database is created
+migrations_dir = "migrations"
+
+# Environment variables and secrets
+# Set these secrets using wrangler secret put <KEY>
+# wrangler secret put USERNAME
+# wrangler secret put PASSWORD
+# wrangler secret put BOT_TOKEN
+# wrangler secret put CHAT_ID
+[vars]
+USERNAME = ""
+PASSWORD = ""
+BOT_TOKEN = ""
+CHAT_ID = ""
+
+[dev]
+# This section is for local development
+# The variables in .dev.vars will be used when running `wrangler dev`

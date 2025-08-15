@@ -1,0 +1,26 @@
+{
+    "name": "tg-filebed",
+    "version": "1.0.0",
+    "description": "A filebed using Telegram as storage, built with Cloudflare Workers and D1.",
+    "main": "src/index.js",
+    "scripts": {
+        "dev": "wrangler dev",
+        "deploy": "wrangler deploy",
+        "db:init": "wrangler d1 migrations apply tg-filebed-db --local",
+        "db:deploy": "wrangler d1 migrations apply tg-filebed-db --remote"
+    },
+    "keywords": [
+        "cloudflare-worker",
+        "telegram",
+        "d1",
+        "image-hosting"
+    ],
+    "author": "Roo",
+    "license": "MIT",
+    "devDependencies": {
+        "wrangler": "^4.30.0"
+    },
+    "dependencies": {
+        "hono": "^4.9.1"
+    }
+}

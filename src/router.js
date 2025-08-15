@@ -1,0 +1,44 @@
+import { Hono } from 'hono';
+import { basicAuth } from './auth';
+import { handleUpload } from './handlers/upload';
+import { handleList } from './handlers/list';
+import { handleDelete, handleDeleteAll } from './handlers/delete';
+import { handleImage } from './handlers/image';
+import { uploadPage } from './views/upload';
+import { managePage } from './views/manage';
+
+export const router = new Hono();
+
+// Public route for displaying images
+router.get('/images/:filename', handleImage);
+
+// Page for uploading images, protected by basic auth
+router.get('/', basicAuth, (c) => c.html(uploadPage));
+
+// API endpoint for uploading files, protected by basic auth
+router.post('/upload', basicAuth, handleUpload);
+
+// API endpoint to list all images, protected by basic auth
+router.get('/list', basicAuth, handleList);
+
+// Page for managing images, protected by basic auth
+router.get('/manage', basicAuth, async (c) => {
+    const page = parseInt(c.req.query('page') || '1', 10);
+    const limit = 20;
+    const offset = (page - 1) * limit;
+
+    const { results } = await c.env.DB.prepare(
+        `SELECT * FROM images ORDER BY created_at DESC LIMIT ? OFFSET ?`
+    ).bind(limit, offset).all();
+
+    const { total } = await c.env.DB.prepare(`SELECT COUNT(*) as total FROM images`).first();
+    const totalPages = Math.ceil(total / limit);
+
+    return c.html(managePage(results, page, totalPages));
+});
+
+// API endpoint to delete all images, protected by basic auth
+router.get('/delete/all', basicAuth, handleDeleteAll);
+
+// API endpoint to delete a specific image, protected by basic auth
+router.get('/delete/:hashid', basicAuth, handleDelete);

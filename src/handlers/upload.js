@@ -1,4 +1,3 @@
-import { randomUUID } from 'crypto';
 import { generateHash, getFileExtension } from '../utils';
 
 export const handleUpload = async (c) => {
@@ -8,7 +7,19 @@ export const handleUpload = async (c) => {
   }
 
   const fileExtension = getFileExtension(file.name);
-  const newFilename = `${randomUUID()}.${fileExtension}`;
+  let newFilename;
+  let isUnique = false;
+
+  while (!isUnique) {
+    const hash = generateHash(12);
+    newFilename = `${hash}.${fileExtension}`;
+    const existing = await c.env.DB.prepare(
+      `SELECT id FROM images WHERE filename = ?`
+    ).bind(newFilename).first();
+    if (!existing) {
+      isUnique = true;
+    }
+  }
 
   const formData = new FormData();
   formData.append('chat_id', c.env.CHAT_ID);

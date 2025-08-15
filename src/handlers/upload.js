@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto';
 import { generateHash, getFileExtension } from '../utils';
 
 export const handleUpload = async (c) => {
@@ -7,7 +8,7 @@ export const handleUpload = async (c) => {
   }
 
   const fileExtension = getFileExtension(file.name);
-  const newFilename = `${generateHash()}.${fileExtension}`;
+  const newFilename = `${randomUUID()}.${fileExtension}`;
 
   const formData = new FormData();
   formData.append('chat_id', c.env.CHAT_ID);
@@ -35,7 +36,7 @@ export const handleUpload = async (c) => {
     `INSERT INTO images (filename, telegram_message_id, telegram_file_id, size, hash_id) VALUES (?, ?, ?, ?, ?)`
   ).bind(newFilename, messageId, fileId, file.size, hashId).run();
 
-  const imageUrl = `${new URL(c.req.url).origin}/images/${newFilename}`;
+  const imageUrl = `${new URL(c.req.url).origin}/file/${newFilename}`;
   return c.json({
     message: 'File uploaded successfully',
     url: imageUrl,

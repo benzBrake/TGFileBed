@@ -1,4 +1,4 @@
-export const handleImage = async (c) => {
+export const handleFile = async (c) => {
   const { filename } = c.req.param();
   const image = await c.env.DB.prepare(`SELECT telegram_file_id FROM images WHERE filename = ?`).bind(filename).first();
 

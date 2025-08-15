@@ -3,14 +3,14 @@ import { basicAuth } from './auth';
 import { handleUpload } from './handlers/upload';
 import { handleList } from './handlers/list';
 import { handleDelete, handleDeleteAll } from './handlers/delete';
-import { handleImage } from './handlers/image';
+import { handleFile } from './handlers/image';
 import { uploadPage } from './views/upload';
 import { managePage } from './views/manage';
 
 export const router = new Hono();
 
 // Public route for displaying images
-router.get('/images/:filename', handleImage);
+router.get('/file/:filename', handleFile);
 
 // Page for uploading images, protected by basic auth
 router.get('/', basicAuth, (c) => c.html(uploadPage));

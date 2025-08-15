@@ -83,7 +83,7 @@ export const uploadPage = `
 
         statusDisplay.textContent = 'Upload successful!';
         statusDisplay.style.color = 'green';
-        displayResults(result.url);
+        displayResults(result.url, result.original_filename);
 
       } catch (error) {
         statusDisplay.textContent = \`Upload failed: \${error.message}\`;
@@ -91,11 +91,12 @@ export const uploadPage = `
       }
     };
     
-    const displayResults = (url) => {
-      const fileName = url.substring(url.lastIndexOf('/') + 1);
+    const displayResults = (url, originalFilename) => {
+      const isImage = /\.(bmp|jpe?g|png|gif|svg|webp|ico|tiff)$/i.test(originalFilename);
+      const fileName = originalFilename.replace(/\.\w+$/, '');
       const bbcode = \`[img]\${url}[/img]\`;
-      const markdown = \`![Image](\${url})\`;
-      const html = \`<img src="\${url}" alt="Image">\`;
+      const markdown = \`![\${fileName}](\${url})\`;
+      const html = isImage? \`<img src="\${url}" alt="\${fileName}">\` : \`<a href="\${url}" target="_blank">\${fileName}</a>\`;
 
       resultsDisplay.innerHTML = \`
         <div class="link-container">

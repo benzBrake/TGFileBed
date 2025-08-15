@@ -36,6 +36,7 @@ export const handleFile = async (c) => {
     headers: {
       'Content-Type': imageResponse.headers.get('Content-Type'),
       'Content-Length': imageResponse.headers.get('Content-Length'),
+      'Content-Disposition': `inline; filename="${filename}"`,
       'Cache-Control': 'public, max-age=31536000, immutable',
     }
   });

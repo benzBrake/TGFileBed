@@ -44,13 +44,14 @@ export const handleUpload = async (c) => {
   const hashId = generateHash(12);
 
   await c.env.DB.prepare(
-    `INSERT INTO images (filename, telegram_message_id, telegram_file_id, size, hash_id) VALUES (?, ?, ?, ?, ?)`
-  ).bind(newFilename, messageId, fileId, file.size, hashId).run();
+    `INSERT INTO images (filename, original_filename, telegram_message_id, telegram_file_id, size, hash_id) VALUES (?, ?, ?, ?, ?, ?)`
+  ).bind(newFilename, file.name, messageId, fileId, file.size, hashId).run();
 
   const imageUrl = `${new URL(c.req.url).origin}/file/${newFilename}`;
   return c.json({
     message: 'File uploaded successfully',
     url: imageUrl,
     hash_id: hashId,
+    original_filename: file.name,
   });
 };

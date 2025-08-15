@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS images;
 CREATE TABLE images (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   filename TEXT NOT NULL,
+  original_filename TEXT,
   telegram_message_id INTEGER NOT NULL,
   telegram_file_id TEXT NOT NULL,
   size INTEGER NOT NULL,

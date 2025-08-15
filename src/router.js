@@ -11,6 +11,7 @@ export const router = new Hono();
 
 // Public route for displaying images
 router.get('/file/:filename', handleFile);
+router.get('/images/:filename', handleFile);
 
 // Page for uploading images, protected by basic auth
 router.get('/', basicAuth, (c) => c.html(uploadPage));

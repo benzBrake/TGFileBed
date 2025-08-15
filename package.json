@@ -6,8 +6,8 @@
     "scripts": {
         "dev": "wrangler dev",
         "deploy": "wrangler deploy",
-        "db:init": "wrangler d1 migrations apply tg-filebed-db --local",
-        "db:deploy": "wrangler d1 migrations apply tg-filebed-db --remote"
+        "db:init": "wrangler d1 migrations apply tg-filebed-db",
+        "db:deploy": "wrangler d1 migrations apply tg-filebed-db"
     },
     "keywords": [
         "cloudflare-worker",

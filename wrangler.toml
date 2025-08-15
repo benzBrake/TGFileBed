@@ -7,21 +7,43 @@ compatibility_date = "2023-10-30"
 [[d1_databases]]
 binding = "DB"
 database_name = "tg-filebed-db"
-database_id = "" # This will be filled in after the database is created
-migrations_dir = "migrations"
+database_id = "e6a27342-6391-49a4-a3f2-602b9e6a988d"
 
-# Environment variables and secrets
-# Set these secrets using wrangler secret put <KEY>
+# D1 database binding for production environment
+[env.production]
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "tg-filebed-db"
+# database_id is not needed here. Wrangler will look up the database by name.
+
+# Environment variables and secrets for production
+[env.production.vars]
+# Set these secrets using `wrangler secret put <KEY> --env production`
+# Example:
+# wrangler secret put BOT_TOKEN --env production
+
+# Top-level environment variables (if any, inherited by all environments unless overridden)
 # wrangler secret put USERNAME
 # wrangler secret put PASSWORD
 # wrangler secret put BOT_TOKEN
 # wrangler secret put CHAT_ID
 [vars]
+# These variables are accessible in all environments unless overridden.
+# For local development, define these in the `.dev.vars` file.
+# For production, set them as secrets.
 USERNAME = ""
 PASSWORD = ""
 BOT_TOKEN = ""
 CHAT_ID = ""
+MAX_FILE_SIZE = "20971520" # 20MB
 
-[dev]
-# This section is for local development
-# The variables in .dev.vars will be used when running `wrangler dev`
+# Configuration for the 'dev' environment (local development)
+[env.dev]
+# For local development, you should have a separate D1 database.
+# Create one with `wrangler d1 create tg-filebed-db-dev`
+# Then, place its database_id here.
+[[env.dev.d1_databases]]
+binding = "DB"
+database_name = "tg-filebed-db-dev"
+# database_id is not needed here for local development either.
+# Wrangler will use the name to find or create the local DB persistence file.

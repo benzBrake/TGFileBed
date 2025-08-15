@@ -6,6 +6,11 @@ export const handleUpload = async (c) => {
     return c.json({ error: 'No file uploaded' }, 400);
   }
 
+ const maxSize = parseInt(c.env.MAX_FILE_SIZE, 10);
+ if (file.size > maxSize) {
+   return c.json({ error: `File size exceeds the limit of ${maxSize / 1024 / 1024}MB` }, 400);
+ }
+
   const fileExtension = getFileExtension(file.name);
   let newFilename;
   let isUnique = false;

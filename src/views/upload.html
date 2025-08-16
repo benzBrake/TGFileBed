@@ -152,6 +152,8 @@
             border-radius: 0 4px 4px 0;
             cursor: pointer;
             transition: background-color 0.3s;
+            white-space: nowrap;
+            padding: 8px 12px;
         }
 
         .copy-btn:hover {
@@ -160,6 +162,130 @@
 
         .copy-btn.copied {
             background-color: #28a745;
+        }
+
+        #history {
+            margin-top: 2rem;
+            text-align: left;
+        }
+
+        #history h2 {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        #history-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-item-info {
+            flex-grow: 1;
+        }
+
+        .history-item-filename {
+            font-weight: 500;
+            color: #5a67d8;
+        }
+
+        .history-item-time {
+            font-size: 0.8rem;
+            color: #777;
+            margin-top: 0.25rem;
+        }
+
+        .history-item-actions button {
+            margin-left: 0.5rem;
+            background: none;
+            border: 1px solid #ccc;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 8px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .link-group {
+            margin-bottom: 1rem;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .link-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            flex-basis: 85px;
+            flex-shrink: 0;
+        }
+
+        .link-group input {
+            width: calc(100% - 80px);
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        #clear-history-btn {
+            background-color: #e53e3e;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        #clear-history-btn:hover {
+            background-color: #c53030;
         }
     </style>
 </head>
@@ -185,7 +311,40 @@
         </form>
         <div id="status"></div>
         <div id="results"></div>
+        <div id="history">
+            <h2 data-t="history-title">History</h2>
+            <ul id="history-list"></ul>
+            <button id="clear-history-btn" data-t="clear-history">Clear History</button>
+        </div>
     </div>
+
+    <div id="historyLinkModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Copy Link</h2>
+            <div class="link-group">
+                <label for="historyPureLink">URL:</label>
+                <input type="text" id="historyPureLink" readonly>
+                <button class="copy-btn">${translate('copy')}</button>
+            </div>
+            <div class="link-group">
+                <label for="historyHtmlLink">HTML:</label>
+                <input type="text" id="historyHtmlLink" readonly>
+                <button class="copy-btn">${translate('copy')}</button>
+            </div>
+            <div class="link-group">
+                <label for="historyBbcodeLink">BBCode:</label>
+                <input type="text" id="historyBbcodeLink" readonly>
+                <button class="copy-btn">${translate('copy')}</button>
+            </div>
+            <div class="link-group">
+                <label for="historyMarkdownLink">Markdown:</label>
+                <input type="text" id="historyMarkdownLink" readonly>
+                <button class="copy-btn">${translate('copy')}</button>
+            </div>
+        </div>
+    </div>
+
 
     <script>
         const locales = {
@@ -204,6 +363,10 @@
                 'html-label': 'HTML',
                 'copy': 'Copy',
                 'copied': 'Copied!',
+                'history-title': 'History',
+                'clear-history': 'Clear History',
+                'no-history': 'No history yet.',
+                'clear-history-confirm': 'Are you sure you want to clear all history?',
             },
             'zh-CN': {
                 'site-title': '{siteTitle}',
@@ -220,6 +383,10 @@
                 'html-label': 'HTML',
                 'copy': '复制',
                 'copied': '已复制！',
+                'history-title': '历史记录',
+                'clear-history': '清除历史记录',
+                'no-history': '暂无历史记录',
+                'clear-history-confirm': '您确定要清除所有历史记录吗？',
             },
             'zh-TW': {
                 'site-title': '{siteTitle}',
@@ -236,6 +403,10 @@
                 'html-label': 'HTML',
                 'copy': '複製',
                 'copied': '已複製！',
+                'history-title': '歷史記錄',
+                'clear-history': '清除歷史記錄',
+                'no-history': '暫無歷史記錄',
+                'clear-history-confirm': '您確定要清除所有歷史記錄嗎？',
             }
         };
 
@@ -344,7 +515,15 @@
 
                 statusDisplay.textContent = translate('upload-successful');
                 statusDisplay.style.color = 'green';
+                const isImage = /\.(bmp|jpe?g|png|gif|svg|webp|ico|tiff)$/i.test(result.original_filename);
                 displayResults(result.url, result.original_filename);
+                addToHistory({
+                    url: result.url,
+                    filename: result.filename,
+                    original_filename: result.original_filename,
+                    timestamp: new Date().toISOString(),
+                    isImage: isImage,
+                });
 
             } catch (error) {
                 statusDisplay.textContent = `${translate('upload-failed')}: ${error.message}`;
@@ -413,6 +592,120 @@
                 });
             });
         };
+
+        const historyList = document.getElementById('history-list');
+        const clearHistoryBtn = document.getElementById('clear-history-btn');
+
+        const getHistory = () => {
+            return JSON.parse(localStorage.getItem('tgfilebed_history')) || [];
+        };
+
+        const saveHistory = (history) => {
+            localStorage.setItem('tgfilebed_history', JSON.stringify(history));
+        };
+
+        const addToHistory = (item) => {
+            let history = getHistory();
+            history.unshift(item);
+            if (history.length > 10) {
+                history = history.slice(0, 10);
+            }
+            saveHistory(history);
+            renderHistory();
+        };
+
+        const renderHistory = () => {
+            const history = getHistory();
+            historyList.innerHTML = '';
+            if (history.length === 0) {
+                historyList.innerHTML = `<li>${translate('no-history')}</li>`;
+                clearHistoryBtn.style.display = 'none';
+                return;
+            }
+            clearHistoryBtn.style.display = 'block';
+
+            history.forEach(item => {
+                const li = document.createElement('li');
+                li.className = 'history-item';
+                li.innerHTML = `
+                    <div class="history-item-info">
+                        <div class="history-item-filename">${item.original_filename}</div>
+                        <div class="history-item-time">${new Date(item.timestamp).toLocaleString()}</div>
+                    </div>
+                    <div class="history-item-actions">
+                        <button>${translate('copy')}</button>
+                    </div>
+                `;
+                li.querySelector('button').addEventListener('click', () => showHistoryModal(item));
+                historyList.appendChild(li);
+            });
+        };
+
+        const historyModal = document.getElementById('historyLinkModal');
+        const historyModalClose = historyModal.querySelector('.close');
+
+        historyModalClose.onclick = () => {
+            historyModal.style.display = "none";
+        };
+
+        window.addEventListener('click', (event) => {
+            if (event.target == historyModal) {
+                historyModal.style.display = "none";
+            }
+        });
+
+
+        const showHistoryModal = (item) => {
+            const { url, original_filename, isImage } = item;
+            document.getElementById('historyPureLink').value = url;
+
+            historyModal.querySelectorAll('.copy-btn').forEach(btn => {
+                btn.textContent = translate('copy');
+            });
+
+            let html, bbcode, markdown;
+            if (isImage) {
+                html = `<a href="${url}"><img src="${url}" alt="${original_filename}" /></a>`;
+                bbcode = `[url=${url}][img]${url}[/img][/url]`;
+                markdown = `![${original_filename}](${url})`;
+            } else {
+                html = `<a href="${url}">${original_filename}</a>`;
+                bbcode = `[url=${url}]${original_filename}[/url]`;
+                markdown = `[${original_filename}](${url})`;
+            }
+
+            document.getElementById('historyHtmlLink').value = html;
+            document.getElementById('historyBbcodeLink').value = bbcode;
+            document.getElementById('historyMarkdownLink').value = markdown;
+
+            historyModal.style.display = 'block';
+        };
+
+        historyModal.querySelectorAll('.copy-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const input = button.previousElementSibling;
+                navigator.clipboard.writeText(input.value).then(() => {
+                    const originalText = button.textContent;
+                    button.textContent = translate('copied');
+                    button.classList.add('copied');
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                        button.classList.remove('copied');
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy text: ', err);
+                });
+            });
+        });
+
+        clearHistoryBtn.addEventListener('click', () => {
+            if (confirm(translate('clear-history-confirm'))) {
+                saveHistory([]);
+                renderHistory();
+            }
+        });
+
+        renderHistory();
     </script>
 </body>
 

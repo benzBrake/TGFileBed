@@ -57,6 +57,7 @@ export const handleUpload = async (c) => {
     message: 'File uploaded successfully',
     url: imageUrl,
     hash_id: hashId,
+    filename: newFilename,
     original_filename: file.name,
   });
 };

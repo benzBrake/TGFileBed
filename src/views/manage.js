@@ -1,149 +1,29 @@
-// Manage Page View
-export const managePage = (images, page, totalPages) => `
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Manage Files</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f4f4f9; color: #333; margin: 0; padding: 2rem; }
-    .container { max-width: 1000px; margin: 0 auto; background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-    h1 { color: #5a67d8; text-align: center; }
-    table { width: 100%; border-collapse: collapse; margin-top: 1.5rem; }
-    th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #ddd; }
-    th { background-color: #5a67d8; color: white; }
-    tr:hover { background-color: #f5f5f5; }
-    a { color: #5a67d8; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    .pagination { text-align: center; margin-top: 1.5rem; }
-    .pagination a, .pagination span { margin: 0 10px; }
-    .delete-all { text-align: center; margin-top: 1.5rem; }
-    .delete-all a { background-color: #e53e3e; color: white; padding: 10px 15px; border-radius: 4px; }
-    .delete-all a:hover { background-color: #c53030; text-decoration: none; }
-    .thumbnail { width: 50px; height: 50px; object-fit: cover; cursor: pointer; }
-    .file-ext { width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; background-color: #eee; border-radius: 4px; cursor: pointer; }
-    .modal { display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); }
-    .modal-content { background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%; max-width: 500px; border-radius: 8px; }
-    .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; }
-    .close:hover, .close:focus { color: black; text-decoration: none; cursor: pointer; }
-    .link-group { margin-bottom: 1rem; position: relative; }
-    .link-group label { display: block; margin-bottom: 0.5rem; font-weight: bold; }
-    .link-group input { width: calc(100% - 80px); padding: 8px; box-sizing: border-box; }
-    .copy-btn { position: absolute; right: 0; top: 24px; padding: 8px 12px; cursor: pointer; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>Manage Files</h1>
-    <table>
-      <thead>
-        <tr>
-          <th>Thumbnail</th>
-          <th>Original Filename</th>
-          <th>Filename</th>
-          <th>Size</th>
-          <th>Created At</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${images.map(image => `
-          <tr>
-            <td>
-              ${image.isImage ?
-                `<img src="/images/${image.filename}" alt="${image.original_filename}" class="thumbnail" onclick="showModal('${image.filename}', '${image.original_filename}', ${image.isImage})">` :
-                `<div class="file-ext" onclick="showModal('${image.filename}', '${image.original_filename}', ${image.isImage})">${image.filename.split('.').pop().toUpperCase()}</div>`
-              }
-            </td>
-            <td>${image.original_filename || 'N/A'}</td>
-            <td>${image.filename}</td>
-            <td>${(image.size / 1024).toFixed(2)} KB</td>
-            <td>${new Date(image.created_at).toLocaleString()}</td>
-            <td><a href="/delete/${image.hash_id}">Delete</a></td>
-          </tr>
-        `).join('')}
-      </tbody>
-    </table>
-    <div class="pagination">
-      ${page > 1 ? `<a href="/manage?page=${page - 1}">Previous</a>` : '<span>Previous</span>'}
-      <span>Page ${page} of ${totalPages}</span>
-      ${page < totalPages ? `<a href="/manage?page=${page + 1}">Next</a>` : '<span>Next</span>'}
-    </div>
-    <div class="delete-all">
-      <a href="/delete/all" onclick="return confirm('Are you sure you want to delete all files?');">Delete All Files</a>
-    </div>
-  </div>
+import manageHTML from './manage.html';
 
-  <div id="linkModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <h2>Copy Link</h2>
-      <div class="link-group">
-        <label for="pureLink">URL:</label>
-        <input type="text" id="pureLink" readonly>
-        <button class="copy-btn" onclick="copyToClipboard('pureLink')">Copy</button>
-      </div>
-      <div class="link-group">
-        <label for="htmlLink">HTML:</label>
-        <input type="text" id="htmlLink" readonly>
-        <button class="copy-btn" onclick="copyToClipboard('htmlLink')">Copy</button>
-      </div>
-      <div class="link-group">
-        <label for="bbcodeLink">BBCode:</label>
-        <input type="text" id="bbcodeLink" readonly>
-        <button class="copy-btn" onclick="copyToClipboard('bbcodeLink')">Copy</button>
-      </div>
-      <div class="link-group">
-        <label for="markdownLink">Markdown:</label>
-        <input type="text" id="markdownLink" readonly>
-        <button class="copy-btn" onclick="copyToClipboard('markdownLink')">Copy</button>
-      </div>
-    </div>
-  </div>
+export const managePage = (images, page, totalPages) => {
+  const tbody = images.map(image => `
+    <tr>
+      <td>
+        ${image.isImage ?
+          `<img src="/images/${image.filename}" alt="${image.original_filename}" class="thumbnail" onclick="showModal('${image.filename}', '${image.original_filename}', ${image.isImage})">` :
+          `<div class="file-ext" onclick="showModal('${image.filename}', '${image.original_filename}', ${image.isImage})">${image.filename.split('.').pop().toUpperCase()}</div>`
+        }
+      </td>
+      <td>${image.original_filename || 'N/A'}</td>
+      <td>${image.filename}</td>
+      <td>${(image.size / 1024).toFixed(2)} KB</td>
+      <td>${new Date(image.created_at).toLocaleString()}</td>
+      <td><a href="/delete/${image.hash_id}">Delete</a></td>
+    </tr>
+  `).join('');
 
-  <script>
-    const modal = document.getElementById('linkModal');
+  const pagination = `
+    ${page > 1 ? `<a href="/manage?page=${page - 1}">Previous</a>` : '<span>Previous</span>'}
+    <span>Page ${page} of ${totalPages}</span>
+    ${page < totalPages ? `<a href="/manage?page=${page + 1}">Next</a>` : '<span>Next</span>'}
+  `;
 
-    function showModal(filename, original_filename, isImage) {
-      const baseUrl = window.location.origin;
-      const fileUrl = baseUrl + '/' + (isImage ? 'images' : 'file') + '/' + filename;
-      
-      document.getElementById('pureLink').value = fileUrl;
-
-      let html, bbcode, markdown;
-      if (isImage) {
-        html = '<a href="' + fileUrl + '"><img src="' + fileUrl + '" alt="' + original_filename + '" /></a>';
-        bbcode = '[url=' + fileUrl + '][img]' + fileUrl + '[/img][/url]';
-        markdown = '![' + original_filename + '](' + fileUrl + ')';
-      } else {
-        html = '<a href="' + fileUrl + '">' + original_filename + '</a>';
-        bbcode = '[url=' + fileUrl + ']' + original_filename + '[/url]';
-        markdown = '[' + original_filename + '](' + fileUrl + ')';
-      }
-      
-      document.getElementById('htmlLink').value = html;
-      document.getElementById('bbcodeLink').value = bbcode;
-      document.getElementById('markdownLink').value = markdown;
-      
-      modal.style.display = "block";
-    }
-
-    function closeModal() {
-      modal.style.display = "none";
-    }
-
-    function copyToClipboard(elementId) {
-      const input = document.getElementById(elementId);
-      input.select();
-      document.execCommand('copy');
-    }
-
-    window.onclick = function(event) {
-      if (event.target == modal) {
-        closeModal();
-      }
-    }
-  </script>
-</body>
-</html>
-`;
+  return manageHTML
+    .replace('{tbody}', tbody)
+    .replace('{pagination}', pagination);
+};

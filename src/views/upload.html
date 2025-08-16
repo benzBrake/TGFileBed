@@ -9,13 +9,52 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: #f4f4f9;
             color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
             margin: 0;
-            padding: 1rem;
+            padding-top: 80px;
             box-sizing: border-box;
+        }
+
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #5a67d8;
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        #locale-switcher {
+            border: 1px solid #ddd;
+            padding: 5px;
+            border-radius: 4px;
+        }
+
+        .manage-link {
+            color: #5a67d8;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .manage-link:hover {
+            text-decoration: underline;
         }
 
         .container {
@@ -26,6 +65,7 @@
             text-align: center;
             width: 100%;
             max-width: 500px;
+            margin: 2rem auto;
         }
 
         h1 {
@@ -122,30 +162,151 @@
 </head>
 
 <body>
+    <header>
+        <div class="logo" data-t="site-title">TGFileBed</div>
+        <div class="header-nav">
+            <select id="locale-switcher">
+                <option value="en">English</option>
+                <option value="zh-CN">简体中文</option>
+                <option value="zh-TW">繁體中文</option>
+            </select>
+            <a href="/manage" class="manage-link" data-t="manage-link">Manage</a>
+        </div>
+    </header>
     <div class="container">
-        <h1>Upload File to TGFileBed</h1>
+        <h1 data-t="upload-page-title">Upload File to TGFileBed</h1>
         <form id="uploadForm">
-            <label for="file" class="file-label">Choose File</label>
+            <label for="file" class="file-label" data-t="choose-file">Choose File</label>
             <input type="file" name="file" id="file" required>
-            <div id="fileName">No file chosen</div>
+            <div id="fileName" data-t="no-file-chosen">No file chosen</div>
         </form>
         <div id="status"></div>
         <div id="results"></div>
     </div>
 
     <script>
+        const locales = {
+            en: {
+                'site-title': 'TGFileBed',
+                'upload-page-title': 'Upload File to TGFileBed',
+                'choose-file': 'Choose File',
+                'no-file-chosen': 'No file chosen',
+                'uploading': 'Uploading...',
+                'upload-successful': 'Upload successful!',
+                'upload-failed': 'Upload failed',
+                'manage-link': 'Manage',
+                'url-label': 'URL',
+                'bbcode-label': 'BBCode',
+                'markdown-label': 'Markdown',
+                'html-label': 'HTML',
+                'copy': 'Copy',
+                'copied': 'Copied!',
+            },
+            'zh-CN': {
+                'site-title': 'TGFileBed',
+                'upload-page-title': '上传文件到 TGFileBed',
+                'choose-file': '选择文件',
+                'no-file-chosen': '未选择文件',
+                'uploading': '上传中...',
+                'upload-successful': '上传成功！',
+                'upload-failed': '上传失败',
+                'manage-link': '管理',
+                'url-label': '链接',
+                'bbcode-label': 'BBCode',
+                'markdown-label': 'Markdown',
+                'html-label': 'HTML',
+                'copy': '复制',
+                'copied': '已复制！',
+            },
+            'zh-TW': {
+                'site-title': 'TGFileBed',
+                'upload-page-title': '上傳檔案到 TGFileBed',
+                'choose-file': '選擇檔案',
+                'no-file-chosen': '未選擇檔案',
+                'uploading': '上傳中...',
+                'upload-successful': '上傳成功！',
+                'upload-failed': '上傳失敗',
+                'manage-link': '管理',
+                'url-label': '連結',
+                'bbcode-label': 'BBCode',
+                'markdown-label': 'Markdown',
+                'html-label': 'HTML',
+                'copy': '複製',
+                'copied': '已複製！',
+            }
+        };
+
+        let currentLocale = 'en';
+
+        function setLocale (locale) {
+            if (locales[locale]) {
+                currentLocale = locale;
+                localStorage.setItem('locale', locale);
+            }
+        }
+
+        function getLocale () {
+            return currentLocale;
+        }
+
+        function translate (key) {
+            return locales[currentLocale][key] || key;
+        }
+
+        function initI18n () {
+            const savedLocale = localStorage.getItem('locale');
+            if (savedLocale && locales[savedLocale]) {
+                setLocale(savedLocale);
+                return;
+            }
+
+            const browserLang = navigator.language;
+            if (browserLang.startsWith('zh-CN')) {
+                setLocale('zh-CN');
+            } else if (browserLang.startsWith('zh-TW') || browserLang.startsWith('zh-HK')) {
+                setLocale('zh-TW');
+            } else {
+                setLocale('en');
+            }
+        }
+
         const uploadForm = document.getElementById('uploadForm');
         const fileInput = document.getElementById('file');
         const fileNameDisplay = document.getElementById('fileName');
         const statusDisplay = document.getElementById('status');
         const resultsDisplay = document.getElementById('results');
+        const localeSwitcher = document.getElementById('locale-switcher');
+
+        const updateUIText = () => {
+            document.querySelectorAll('[data-t]').forEach(el => {
+                const key = el.getAttribute('data-t');
+                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                    if (el.placeholder) el.placeholder = translate(key);
+                } else if (el.tagName === 'OPTION') {
+                    // Skip options as they are static
+                } else {
+                    el.textContent = translate(key);
+                }
+            });
+            document.title = translate('upload-page-title');
+            localeSwitcher.value = getLocale();
+        };
+
+        initI18n();
+        updateUIText();
+
+        localeSwitcher.addEventListener('change', (e) => {
+            setLocale(e.target.value);
+            updateUIText();
+        });
+
 
         fileInput.addEventListener('change', () => {
             if (fileInput.files.length > 0) {
                 fileNameDisplay.textContent = fileInput.files[0].name;
                 handleUpload();
             } else {
-                fileNameDisplay.textContent = 'No file chosen';
+                fileNameDisplay.textContent = translate('no-file-chosen');
             }
         });
 
@@ -160,7 +321,7 @@
             const formData = new FormData();
             formData.append('file', file);
 
-            statusDisplay.textContent = 'Uploading...';
+            statusDisplay.textContent = translate('uploading');
             statusDisplay.style.color = '#5a67d8';
             resultsDisplay.style.display = 'none';
             resultsDisplay.innerHTML = '';
@@ -177,12 +338,12 @@
                     throw new Error(result.error || 'Unknown error occurred');
                 }
 
-                statusDisplay.textContent = 'Upload successful!';
+                statusDisplay.textContent = translate('upload-successful');
                 statusDisplay.style.color = 'green';
                 displayResults(result.url, result.original_filename);
 
             } catch (error) {
-                statusDisplay.textContent = `Upload failed: ${error.message}`;
+                statusDisplay.textContent = `${translate('upload-failed')}: ${error.message}`;
                 statusDisplay.style.color = 'red';
             }
         };
@@ -195,37 +356,38 @@
             const html = isImage ? `<img src="${url}" alt="${fileName}">` : `<a href="${url}" target="_blank">${fileName}</a>`;
 
             resultsDisplay.innerHTML = `
-        <div class="link-container">
-          <label>URL</label>
-          <div class="input-group">
-            <input type="text" value="${url}" readonly>
-            <button class="copy-btn">Copy</button>
-          </div>
-        </div>
-        <div class="link-container">
-          <label>BBCode</label>
-          <div class="input-group">
-            <input type="text" value="${bbcode}" readonly>
-            <button class="copy-btn">Copy</button>
-          </div>
-        </div>
-        <div class="link-container">
-          <label>Markdown</label>
-          <div class="input-group">
-            <input type="text" value="${markdown}" readonly>
-            <button class="copy-btn">Copy</button>
-          </div>
-        </div>
-        <div class="link-container">
-          <label>HTML</label>
-          <div class="input-group">
-            <input type="text" value='${html}' readonly>
-            <button class="copy-btn">Copy</button>
-          </div>
-        </div>
-      `;
+                <div class="link-container">
+                    <label data-t="url-label">${translate('url-label')}</label>
+                    <div class="input-group">
+                        <input type="text" value="${url}" readonly>
+                        <button class="copy-btn">${translate('copy')}</button>
+                    </div>
+                </div>
+                <div class="link-container">
+                    <label data-t="bbcode-label">${translate('bbcode-label')}</label>
+                    <div class="input-group">
+                        <input type="text" value="${bbcode}" readonly>
+                        <button class="copy-btn">${translate('copy')}</button>
+                    </div>
+                </div>
+                <div class="link-container">
+                    <label data-t="markdown-label">${translate('markdown-label')}</label>
+                    <div class="input-group">
+                        <input type="text" value="${markdown}" readonly>
+                        <button class="copy-btn">${translate('copy')}</button>
+                    </div>
+                </div>
+                <div class="link-container">
+                    <label data-t="html-label">${translate('html-label')}</label>
+                    <div class="input-group">
+                        <input type="text" value='${html}' readonly>
+                        <button class="copy-btn">${translate('copy')}</button>
+                    </div>
+                </div>
+            `;
             resultsDisplay.style.display = 'block';
             addCopyListeners();
+            updateUIText();
         };
 
         const addCopyListeners = () => {
@@ -234,11 +396,12 @@
                     const input = button.previousElementSibling;
                     navigator.clipboard.writeText(input.value).then(() => {
                         const originalText = button.textContent;
-                        button.textContent = 'Copied!';
+                        button.textContent = translate('copied');
                         button.classList.add('copied');
                         setTimeout(() => {
                             button.textContent = originalText;
                             button.classList.remove('copied');
+                            updateUIText();
                         }, 2000);
                     }).catch(err => {
                         console.error('Failed to copy text: ', err);

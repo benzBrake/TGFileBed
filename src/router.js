@@ -14,7 +14,12 @@ router.get('/file/:filename', handleFile);
 router.get('/images/:filename', handleFile);
 
 // Page for uploading images, protected by basic auth
-router.get('/', basicAuth, (c) => c.html(uploadPage));
+router.get('/', basicAuth, (c) => {
+    const siteTitle = c.env.SITE_TITLE || 'TGFileBed';
+    return c.html(uploadPage
+        .replace(/{siteTitle}/g, siteTitle)
+    );
+});
 
 // API endpoint for uploading files, protected by basic auth
 router.post('/upload', basicAuth, handleUpload);
@@ -35,7 +40,7 @@ router.get('/manage', basicAuth, async (c) => {
     const { total } = await c.env.DB.prepare(`SELECT COUNT(*) as total FROM images`).first();
     const totalPages = Math.ceil(total / limit);
 
-    return c.html(managePage(results, page, totalPages));
+    return c.html(managePage(results, page, totalPages).replace('{siteTitle}', c.env.SITE_TITLE || 'TGFileBed'));
 });
 
 // API endpoint to delete all images, protected by basic auth

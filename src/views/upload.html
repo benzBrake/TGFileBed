@@ -2,8 +2,11 @@
 <html>
 
 <head>
-    <title>Upload File</title>
+    <title>{siteTitle}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        window.siteTitle = '{siteTitle}';
+    </script>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -187,8 +190,8 @@
     <script>
         const locales = {
             en: {
-                'site-title': 'TGFileBed',
-                'upload-page-title': 'Upload File to TGFileBed',
+                'site-title': '{siteTitle}',
+                'upload-page-title': `Upload File to {siteTitle}`,
                 'choose-file': 'Choose File',
                 'no-file-chosen': 'No file chosen',
                 'uploading': 'Uploading...',
@@ -203,8 +206,8 @@
                 'copied': 'Copied!',
             },
             'zh-CN': {
-                'site-title': 'TGFileBed',
-                'upload-page-title': '上传文件到 TGFileBed',
+                'site-title': '{siteTitle}',
+                'upload-page-title': `上传文件到 {siteTitle}`,
                 'choose-file': '选择文件',
                 'no-file-chosen': '未选择文件',
                 'uploading': '上传中...',
@@ -219,8 +222,8 @@
                 'copied': '已复制！',
             },
             'zh-TW': {
-                'site-title': 'TGFileBed',
-                'upload-page-title': '上傳檔案到 TGFileBed',
+                'site-title': '{siteTitle}',
+                'upload-page-title': `上傳檔案到 {siteTitle}`,
                 'choose-file': '選擇檔案',
                 'no-file-chosen': '未選擇檔案',
                 'uploading': '上傳中...',
@@ -250,7 +253,8 @@
         }
 
         function translate (key) {
-            return locales[currentLocale][key] || key;
+            const translated = locales[currentLocale][key] || key;
+            return translated.replace(/{siteTitle}/g, window.siteTitle);
         }
 
         function initI18n () {

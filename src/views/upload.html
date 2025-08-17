@@ -4,12 +4,14 @@
 <head>
     <title>{siteTitle}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon"
+        href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAADM0lEQVQ4TyVTW0hVaRRe67/sffaJgR6yptLQRjCzqCwLJyyDKSfoYlHUBPMyPRQ9BTUPE9SLXTCDYuhKlxGmh2pImIEGIyslLLQ4qY0e7KLYaJZ2VMRtdjln9e19Nnud9a/9r/V93/r/dbjv/wFpqB6X7thnViktWmt2rBXtKFaahZWwURo/eIPYEHuukenzhPPWpHz+63iXPKv7SD2JZnoz1EpJ+UJMQqwZnggIxIwYa1ZMrvVoXk4xLchfSTnfA6Dyp7h0dD6Rh50XkMMiyBVOCZFiACEUxoOYUW9Es2ENRdt+3M9FRUt8rijvkPqWy9Qz2AyOgDIoQX7IGZYBSsMUoZiUCtaaCvNLacuGnWmAu7Fz0vu+BczQTikwBz2ghLUEZUoZUSodg521NlKQu5y3bQwB4lIXO0u9iVjIVvH7PopEXPCrUEXdrUZaVrKIJk/+hpLJFB379Qp2DBXkLqNN635OAwQK+oZbcfqubP9lPZeVl4S3UVvzQKbNzODFxQVS93cTT/ifpLamia1yJH/2El6/dksaoP7pJdzAf+gP/cIOnNgdNEFVB6rp6Pm9FJ3k0YPaFhrsH6FnTa/JaIfychbS2jXrfD68KS4NLX9I/3A7elUh86GTe2R87BOfrrghZ27+xlEvKgN9w9z66JXUXo9hLhzJzc7n1T+UQQEAGtv+pHejHWA3hE06eGoXjSR8ulR5i642HKKLx/6lx/dektaWLDthznfZc6h0VUmgoEMetl+T96MvMGmYQOXyjl1lMjI0wfX/tMm+yq1cXXVfPox+QakrkI+8qGTPms3LSwt9PgIFzfGblBjrQm8RoLshk1YWigJGlxztklXBHgzrwGdlZlHRijwo2ByXtue3JTHWjft1cQYWPbqCk2arI/Au4ojgG7wXegufNetbnl88w+eqHZ3S3fOCugYaweKETI72yMI0YhSFqgyUWB0lB/uWPcornEqZcz2fa051S/udpIxMvOYPH4fAYHAbDpSY8LSNsph9KNIuuxoKjOWM6Z5kzHR5xuKkz2/7B+XRjXHqbcMApzBjBrOg8VcyBAUMS38zNm3WIYpMYpqSm6LMpUn/K4oHR0U6kRSQAAAAAElFTkSuQmCC" />
     <script>
         window.siteTitle = '{siteTitle}';
     </script>
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, " Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: #f4f4f9;
             color: #333;
             margin: 0;
@@ -72,7 +74,8 @@
         }
 
         h1 {
-            color: #5a67d8;
+            color:
+                #5a67d8;
             margin-bottom: 1.5rem;
         }
 
@@ -80,7 +83,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1rem;
+            gap:
+                1rem;
         }
 
         #file {
@@ -91,12 +95,14 @@
             background-color: #5a67d8;
             color: white;
             border: none;
-            padding: 12px 20px;
+            padding:
+                12px 20px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 1rem;
             transition: background-color 0.3s;
-            display: inline-block;
+            display:
+                inline-block;
         }
 
         .file-label:hover {
@@ -153,7 +159,8 @@
             cursor: pointer;
             transition: background-color 0.3s;
             white-space: nowrap;
-            padding: 8px 12px;
+            padding:
+                8px 12px;
         }
 
         .copy-btn:hover {
@@ -172,7 +179,8 @@
         #history h2 {
             font-size: 1.2rem;
             color: #333;
-            margin-bottom: 1rem;
+            margin-bottom:
+                1rem;
         }
 
         #history-list {
@@ -191,6 +199,12 @@
 
         .history-item:last-child {
             border-bottom: none;
+        }
+
+        .history-item.new {
+            background-color: #d4edda;
+            transition:
+                background-color 0.5s ease;
         }
 
         .history-item-info {
@@ -215,6 +229,58 @@
             padding: 5px 10px;
             border-radius: 4px;
             cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .history-item-progress {
+            display: flex;
+            align-items:
+                center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .copy-btn-main {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            white-space: nowrap;
+        }
+
+        .copy-btn-main:hover {
+            background-color: #5a6268;
+        }
+
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #5a67d8;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .error-container {
+            cursor: pointer;
+        }
+
+        .error-text {
+            color: red;
+            font-weight: bold;
         }
 
         .modal {
@@ -226,7 +292,8 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
+            background-color:
+                rgba(0, 0, 0, 0.4);
         }
 
         .modal-content {
@@ -242,7 +309,8 @@
         .close {
             color: #aaa;
             float: right;
-            font-size: 28px;
+            font-size:
+                28px;
             font-weight: bold;
         }
 
@@ -275,7 +343,8 @@
         }
 
         #clear-history-btn {
-            background-color: #e53e3e;
+            background-color:
+                #e53e3e;
             color: white;
             padding: 10px 15px;
             border-radius: 4px;
@@ -286,6 +355,79 @@
 
         #clear-history-btn:hover {
             background-color: #c53030;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right:
+                0;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            width: 320px;
+            z-index: 1001;
+            margin-top: 5px;
+            opacity: 0;
+            visibility: hidden;
+            transform:
+                translateY(-10px);
+            transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+        }
+
+        .dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items:
+                center;
+            margin-bottom: 8px;
+        }
+
+        .dropdown-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .dropdown-item label {
+            width:
+                80px;
+            font-weight: bold;
+            margin-right: 10px;
+            flex-shrink: 0;
+            font-size: 0.9rem;
+        }
+
+        .dropdown-item input {
+            flex-grow: 1;
+            border: 1px solid #ddd;
+            padding: 6px;
+            border-radius: 4px 0 0 4px;
+            background: #f9f9f9;
+        }
+
+        .dropdown-item .copy-btn {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            white-space: nowrap;
+        }
+
+        .dropdown-item .copy-btn:hover {
+            background-color: #5a6268;
+        }
+
+        .dropdown-item .copy-btn.copied {
+            background-color: #28a745;
         }
     </style>
 </head>
@@ -306,7 +448,7 @@
         <h1 data-t="upload-page-title">Upload File to TGFileBed</h1>
         <form id="uploadForm">
             <label for="file" class="file-label" data-t="choose-file">Choose File</label>
-            <input type="file" name="file" id="file" required>
+            <input type="file" name="file" id="file" required multiple>
             <div id="fileName" data-t="no-file-chosen">No file chosen</div>
         </form>
         <div id="status"></div>
@@ -318,33 +460,12 @@
         </div>
     </div>
 
-    <div id="historyLinkModal" class="modal" style="display:none;">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Copy Link</h2>
-            <div class="link-group">
-                <label for="historyPureLink">URL:</label>
-                <input type="text" id="historyPureLink" readonly>
-                <button class="copy-btn">${translate('copy')}</button>
-            </div>
-            <div class="link-group">
-                <label for="historyHtmlLink">HTML:</label>
-                <input type="text" id="historyHtmlLink" readonly>
-                <button class="copy-btn">${translate('copy')}</button>
-            </div>
-            <div class="link-group">
-                <label for="historyBbcodeLink">BBCode:</label>
-                <input type="text" id="historyBbcodeLink" readonly>
-                <button class="copy-btn">${translate('copy')}</button>
-            </div>
-            <div class="link-group">
-                <label for="historyMarkdownLink">Markdown:</label>
-                <input type="text" id="historyMarkdownLink" readonly>
-                <button class="copy-btn">${translate('copy')}</button>
-            </div>
-        </div>
-    </div>
-
+    <footer style="text-align: center; padding: 20px; color: #666; font-size: 0.9rem;">
+        <p>© {siteTitle} - TGFileBed Project from <a href="https://github.com/benzBrake/TGFileBed" target="_blank"
+                style="color: #5a67d8;">GitHub</a></p>
+        <p><a href="https://www.buymeacoffee.com/buyryanacoffie" target="_blank" style="color: #5a67d8;">Buy me a
+                coffee</a></p>
+    </footer>
 
     <script>
         const locales = {
@@ -367,6 +488,10 @@
                 'clear-history': 'Clear History',
                 'no-history': 'No history yet.',
                 'clear-history-confirm': 'Are you sure you want to clear all history?',
+                'files-selected': '{count} files selected',
+                'no-file-provided': 'No file provided for upload.',
+                'unknown-error': 'Unknown error occurred',
+                'network-error': 'Network error during upload.',
             },
             'zh-CN': {
                 'site-title': '{siteTitle}',
@@ -387,6 +512,10 @@
                 'clear-history': '清除历史记录',
                 'no-history': '暂无历史记录',
                 'clear-history-confirm': '您确定要清除所有历史记录吗？',
+                'files-selected': '已选择 {count} 个文件',
+                'no-file-provided': '未提供上传文件。',
+                'unknown-error': '发生未知错误',
+                'network-error': '上传过程中出现网络错误。',
             },
             'zh-TW': {
                 'site-title': '{siteTitle}',
@@ -407,6 +536,10 @@
                 'clear-history': '清除歷史記錄',
                 'no-history': '暫無歷史記錄',
                 'clear-history-confirm': '您確定要清除所有歷史記錄嗎？',
+                'files-selected': '已選擇 {count} 個檔案',
+                'no-file-provided': '未提供上傳檔案。',
+                'unknown-error': '發生未知錯誤',
+                'network-error': '上傳過程中出現網路錯誤。',
             }
         };
 
@@ -477,192 +610,237 @@
 
 
         fileInput.addEventListener('change', () => {
-            if (fileInput.files.length > 0) {
-                fileNameDisplay.textContent = fileInput.files[0].name;
-                handleUpload();
+            const files = fileInput.files;
+            if (files.length > 0) {
+                if (files.length === 1) {
+                    fileNameDisplay.textContent = files[0].name;
+                } else {
+                    fileNameDisplay.textContent = translate('files-selected').replace('{count}', files.length);
+                }
+                for (const file of files) {
+                    handleUpload(file);
+                }
             } else {
                 fileNameDisplay.textContent = translate('no-file-chosen');
             }
         });
 
-        const handleUpload = async () => {
-            const file = fileInput.files[0];
+        const handleUpload = (file) => {
             if (!file) {
-                statusDisplay.textContent = 'Please select a file first.';
+                statusDisplay.textContent = translate('no-file-provided');
                 statusDisplay.style.color = 'red';
                 return;
             }
 
+            const tempId = `temp_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+            const tempHistoryItem = {
+                id: tempId,
+                original_filename: file.name,
+                timestamp: new Date().toISOString(),
+                status: 'uploading',
+            };
+
+            sessionHistory.unshift(tempHistoryItem);
+            renderHistory();
+
             const formData = new FormData();
             formData.append('file', file);
 
-            statusDisplay.textContent = translate('uploading');
-            statusDisplay.style.color = '#5a67d8';
-            resultsDisplay.style.display = 'none';
-            resultsDisplay.innerHTML = '';
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/upload', true);
 
-            try {
-                const response = await fetch('/upload', {
-                    method: 'POST',
-                    body: formData,
-                });
-
-                const result = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(result.error || 'Unknown error occurred');
+            xhr.onload = () => {
+                const index = sessionHistory.findIndex(item => item.id === tempId);
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    const result = JSON.parse(xhr.responseText);
+                    const isImage = /\.(bmp|jpe?g|png|gif|svg|webp|ico|tiff)$/i.test(result.original_filename);
+                    const finalHistoryItem = {
+                        ...tempHistoryItem,
+                        status: 'success',
+                        url: result.url,
+                        filename: result.filename,
+                        isImage: isImage,
+                    };
+                    if (index !== -1) {
+                        sessionHistory[index] = finalHistoryItem;
+                    }
+                    saveHistory(sessionHistory.filter(item => item.status === 'success'));
+                } else {
+                    const errorResult = JSON.parse(xhr.responseText);
+                    const errorMessage = errorResult.error || translate('unknown-error');
+                    if (index !== -1) {
+                        sessionHistory[index].status = 'error';
+                        sessionHistory[index].error = errorMessage;
+                    }
                 }
+                renderHistory();
+            };
 
-                statusDisplay.textContent = translate('upload-successful');
-                statusDisplay.style.color = 'green';
-                const isImage = /\.(bmp|jpe?g|png|gif|svg|webp|ico|tiff)$/i.test(result.original_filename);
-                displayResults(result.url, result.original_filename);
-                addToHistory({
-                    url: result.url,
-                    filename: result.filename,
-                    original_filename: result.original_filename,
-                    timestamp: new Date().toISOString(),
-                    isImage: isImage,
-                });
+            xhr.onerror = () => {
+                const index = sessionHistory.findIndex(item => item.id === tempId);
+                if (index !== -1) {
+                    sessionHistory[index].status = 'error';
+                    sessionHistory[index].error = translate('network-error');
+                }
+                renderHistory();
+            };
 
-            } catch (error) {
-                statusDisplay.textContent = `${translate('upload-failed')}: ${error.message}`;
-                statusDisplay.style.color = 'red';
-            }
-        };
-
-        const displayResults = (url, originalFilename) => {
-            const isImage = /\.(bmp|jpe?g|png|gif|svg|webp|ico|tiff)$/i.test(originalFilename);
-            const fileName = originalFilename.replace(/\.\w+$/, '');
-            const bbcode = `[img]${url}[/img]`;
-            const markdown = `![${fileName}](${url})`;
-            const html = isImage ? `<img src="${url}" alt="${fileName}">` : `<a href="${url}" target="_blank">${fileName}</a>`;
-
-            resultsDisplay.innerHTML = `
-                <div class="link-container">
-                    <label data-t="url-label">${translate('url-label')}</label>
-                    <div class="input-group">
-                        <input type="text" value="${url}" readonly>
-                        <button class="copy-btn">${translate('copy')}</button>
-                    </div>
-                </div>
-                <div class="link-container">
-                    <label data-t="bbcode-label">${translate('bbcode-label')}</label>
-                    <div class="input-group">
-                        <input type="text" value="${bbcode}" readonly>
-                        <button class="copy-btn">${translate('copy')}</button>
-                    </div>
-                </div>
-                <div class="link-container">
-                    <label data-t="markdown-label">${translate('markdown-label')}</label>
-                    <div class="input-group">
-                        <input type="text" value="${markdown}" readonly>
-                        <button class="copy-btn">${translate('copy')}</button>
-                    </div>
-                </div>
-                <div class="link-container">
-                    <label data-t="html-label">${translate('html-label')}</label>
-                    <div class="input-group">
-                        <input type="text" value='${html}' readonly>
-                        <button class="copy-btn">${translate('copy')}</button>
-                    </div>
-                </div>
-            `;
-            resultsDisplay.style.display = 'block';
-            addCopyListeners();
-            updateUIText();
+            xhr.send(formData);
         };
 
         const addCopyListeners = () => {
             document.querySelectorAll('.copy-btn').forEach(button => {
-                button.addEventListener('click', () => {
+                button.addEventListener('click', (event) => {
                     const input = button.previousElementSibling;
-                    navigator.clipboard.writeText(input.value).then(() => {
-                        const originalText = button.textContent;
-                        button.textContent = translate('copied');
-                        button.classList.add('copied');
-                        setTimeout(() => {
-                            button.textContent = originalText;
-                            button.classList.remove('copied');
-                            updateUIText();
-                        }, 2000);
-                    }).catch(err => {
-                        console.error('Failed to copy text: ', err);
-                    });
+                    if (input && input.value) {
+                        navigator.clipboard.writeText(input.value).then(() => {
+                            const originalText = button.textContent;
+                            button.textContent = translate('copied');
+                            button.classList.add('copied');
+                            setTimeout(() => {
+                                button.textContent = originalText;
+                                button.classList.remove('copied');
+                            }, 2000);
+                        }).catch(err => {
+                            console.error('Failed to copy text: ', err);
+                        });
+                    }
+                    event.stopPropagation();
                 });
             });
         };
 
         const historyList = document.getElementById('history-list');
         const clearHistoryBtn = document.getElementById('clear-history-btn');
+        let sessionHistory = [];
 
         const getHistory = () => {
-            return JSON.parse(localStorage.getItem('tgfilebed_history')) || [];
+            const history = JSON.parse(localStorage.getItem('tgfilebed_history')) || [];
+            return history.map(item => ({ ...item, status: 'success' }));
         };
 
         const saveHistory = (history) => {
-            localStorage.setItem('tgfilebed_history', JSON.stringify(history));
-        };
-
-        const addToHistory = (item) => {
-            let history = getHistory();
-            history.unshift(item);
-            if (history.length > 10) {
-                history = history.slice(0, 10);
-            }
-            saveHistory(history);
-            renderHistory();
+            const toSave = history
+                .filter(item => item.status === 'success')
+                .map(({ id, status, error, ...rest }) => rest)
+                .slice(0, 10);
+            localStorage.setItem('tgfilebed_history', JSON.stringify(toSave));
         };
 
         const renderHistory = () => {
-            const history = getHistory();
             historyList.innerHTML = '';
-            if (history.length === 0) {
+            const historyToRender = sessionHistory;
+
+            if (historyToRender.length === 0) {
                 historyList.innerHTML = `<li>${translate('no-history')}</li>`;
                 clearHistoryBtn.style.display = 'none';
                 return;
             }
             clearHistoryBtn.style.display = 'block';
 
-            history.forEach(item => {
+            historyToRender.forEach(item => {
                 const li = document.createElement('li');
                 li.className = 'history-item';
+                li.dataset.id = item.id;
+
+                let actionsHtml = '';
+                switch (item.status) {
+                    case 'uploading':
+                        actionsHtml = `<div class="loader"></div>`;
+                        break;
+                    case 'success':
+                        actionsHtml = `<button class="copy-btn-main">${translate('copy')}</button>`;
+                        break;
+                    case 'error':
+                        actionsHtml = `
+                            <div class="error-container" title="${item.error}">
+                                <span class="error-text">${translate('upload-failed')}</span>
+                            </div>`;
+                        break;
+                }
+
                 li.innerHTML = `
                     <div class="history-item-info">
                         <div class="history-item-filename">${item.original_filename}</div>
                         <div class="history-item-time">${new Date(item.timestamp).toLocaleString()}</div>
                     </div>
-                    <div class="history-item-actions">
-                        <button>${translate('copy')}</button>
+                    <div class="history-item-progress">
+                        ${actionsHtml}
                     </div>
                 `;
-                li.querySelector('button').addEventListener('click', () => showHistoryModal(item));
+
+                if (item.status === 'success') {
+                    const copyBtn = li.querySelector('.copy-btn-main');
+                    const progressContainer = li.querySelector('.history-item-progress');
+
+                    const isTouchDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+                    if (isTouchDevice()) {
+                        copyBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            toggleDropdown(copyBtn, item);
+                        });
+                    } else {
+                        let leaveTimeout;
+                        progressContainer.addEventListener('mouseenter', () => {
+                            clearTimeout(leaveTimeout);
+                            toggleDropdown(copyBtn, item, true);
+                        });
+                        progressContainer.addEventListener('mouseleave', () => {
+                            leaveTimeout = setTimeout(() => {
+                                toggleDropdown(copyBtn, item, false);
+                            }, 200);
+                        });
+                    }
+                }
                 historyList.appendChild(li);
             });
+            addCopyListeners();
         };
 
-        const historyModal = document.getElementById('historyLinkModal');
-        const historyModalClose = historyModal.querySelector('.close');
-
-        historyModalClose.onclick = () => {
-            historyModal.style.display = "none";
-        };
-
-        window.addEventListener('click', (event) => {
-            if (event.target == historyModal) {
-                historyModal.style.display = "none";
+        const toggleDropdown = (button, item, show) => {
+            // For click logic on touch devices
+            if (typeof show === 'undefined') {
+                const existingDropdown = button.nextElementSibling;
+                const shouldShow = !existingDropdown || !existingDropdown.classList.contains('show');
+                closeAllDropdowns();
+                if (shouldShow) {
+                    showDropdown(button, item);
+                }
             }
-        });
+            // For hover logic on non-touch devices
+            else {
+                if (show) {
+                    closeAllDropdowns(button.parentElement);
+                    showDropdown(button, item);
+                } else {
+                    hideDropdown(button);
+                }
+            }
+        };
 
+        const showDropdown = (button, item) => {
+            let dropdown = button.nextElementSibling;
+            if (!dropdown || !dropdown.classList.contains('dropdown-menu')) {
+                dropdown = createDropdown(item);
+                button.insertAdjacentElement('afterend', dropdown);
+                addCopyListeners();
+            }
+            dropdown.classList.add('show');
+        }
 
-        const showHistoryModal = (item) => {
+        const hideDropdown = (button) => {
+            let dropdown = button.nextElementSibling;
+            if (dropdown && dropdown.classList.contains('dropdown-menu')) {
+                dropdown.classList.remove('show');
+            }
+        }
+
+        const createDropdown = (item) => {
+            const dropdown = document.createElement('div');
+            dropdown.className = 'dropdown-menu';
+
             const { url, original_filename, isImage } = item;
-            document.getElementById('historyPureLink').value = url;
-
-            historyModal.querySelectorAll('.copy-btn').forEach(btn => {
-                btn.textContent = translate('copy');
-            });
-
             let html, bbcode, markdown;
             if (isImage) {
                 html = `<a href="${url}"><img src="${url}" alt="${original_filename}" /></a>`;
@@ -674,37 +852,58 @@
                 markdown = `[${original_filename}](${url})`;
             }
 
-            document.getElementById('historyHtmlLink').value = html;
-            document.getElementById('historyBbcodeLink').value = bbcode;
-            document.getElementById('historyMarkdownLink').value = markdown;
+            const links = {
+                'url-label': url,
+                'html-label': html,
+                'bbcode-label': bbcode,
+                'markdown-label': markdown,
+            };
 
-            historyModal.style.display = 'block';
+            for (const [labelKey, linkValue] of Object.entries(links)) {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'dropdown-item';
+
+                const label = document.createElement('label');
+                label.textContent = `${translate(labelKey)}:`;
+
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = linkValue;
+                input.readOnly = true;
+
+                const button = document.createElement('button');
+                button.className = 'copy-btn';
+                button.textContent = translate('copy');
+
+                itemDiv.appendChild(label);
+                itemDiv.appendChild(input);
+                itemDiv.appendChild(button);
+                dropdown.appendChild(itemDiv);
+            }
+
+            dropdown.addEventListener('click', e => e.stopPropagation());
+            return dropdown;
         };
 
-        historyModal.querySelectorAll('.copy-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                const input = button.previousElementSibling;
-                navigator.clipboard.writeText(input.value).then(() => {
-                    const originalText = button.textContent;
-                    button.textContent = translate('copied');
-                    button.classList.add('copied');
-                    setTimeout(() => {
-                        button.textContent = originalText;
-                        button.classList.remove('copied');
-                    }, 2000);
-                }).catch(err => {
-                    console.error('Failed to copy text: ', err);
-                });
+        const closeAllDropdowns = (exceptContainer = null) => {
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                if (exceptContainer === null || !menu.parentElement.isSameNode(exceptContainer)) {
+                    menu.classList.remove('show');
+                }
             });
-        });
+        };
+
+        window.addEventListener('click', () => closeAllDropdowns());
 
         clearHistoryBtn.addEventListener('click', () => {
             if (confirm(translate('clear-history-confirm'))) {
+                sessionHistory = [];
                 saveHistory([]);
                 renderHistory();
             }
         });
 
+        sessionHistory = getHistory();
         renderHistory();
     </script>
 </body>

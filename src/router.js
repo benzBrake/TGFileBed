@@ -40,7 +40,9 @@ router.get('/manage', basicAuth, async (c) => {
     const { total } = await c.env.DB.prepare(`SELECT COUNT(*) as total FROM images`).first();
     const totalPages = Math.ceil(total / limit);
 
-    return c.html(managePage(results, page, totalPages).replace('{siteTitle}', c.env.SITE_TITLE || 'TGFileBed'));
+    return c.html(managePage(results, page, totalPages)
+        .replace('{siteTitle}', c.env.SITE_TITLE || 'TGFileBed')
+    );
 });
 
 // API endpoint to delete all images, protected by basic auth

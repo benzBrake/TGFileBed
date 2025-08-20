@@ -21,7 +21,7 @@
 
 1.  **克隆代码仓库：**
     ```bash
-    git clone <repository-url>
+    git clone https://github.com/benzBrake/TGFileBed tg-filebed
     cd tg-filebed
     ```
 

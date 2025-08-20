@@ -21,7 +21,7 @@ This project provides a self-hosted image hosting service using Telegram as stor
 
 1.  **Clone the repository:**
     ```bash
-    git clone <repository-url>
+    git clone https://github.com/benzBrake/TGFileBed tg-filebed
     cd tg-filebed
     ```
 

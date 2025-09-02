@@ -12,5 +12,7 @@ export const generateHash = (length = 8) => {
 
 // Get file extension
 export const getFileExtension = (filename) => {
-  return filename.slice(((filename.lastIndexOf(".") - 1) >>> 0) + 2);
+  if (typeof filename !== 'string') return '';
+  const match = filename.match(/\.([a-zA-Z0-9]{1,5})$/);
+  return match ? match[1].toLowerCase() : '';
 };

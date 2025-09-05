@@ -166,6 +166,22 @@
             padding: 8px 12px;
             cursor: pointer;
         }
+
+        #deleteModal .modal-content {
+            text-align: center;
+        }
+
+        #deleteModal p {
+            margin: 10px 0;
+        }
+
+        #deleteModal button {
+            transition: background-color 0.2s;
+        }
+
+        #deleteModal button:hover {
+            opacity: 0.9;
+        }
     </style>
 </head>
 
@@ -191,8 +207,7 @@
             {pagination}
         </div>
         <div class="delete-all">
-            <a href="/delete/all" onclick="return confirm('Are you sure you want to delete all files?');">Delete All
-                Files</a>
+            <a href="#" onclick="showDeleteAllModal(); return false;">Delete All Files</a>
         </div>
     </div>
 
@@ -219,6 +234,21 @@
                 <label for="markdownLink">Markdown:</label>
                 <input type="text" id="markdownLink" readonly>
                 <button class="copy-btn" onclick="copyToClipboard('markdownLink')">Copy</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeDeleteModal()">&times;</span>
+            <h2>Confirm Delete</h2>
+            <p>Are you sure you want to delete this file?</p>
+            <p><strong id="deleteFileName"></strong></p>
+            <div style="margin-top: 20px; text-align: right;">
+                <button onclick="closeDeleteModal()"
+                    style="margin-right: 10px; padding: 8px 16px; background-color: #e2e8f0; border: none; border-radius: 4px; cursor: pointer;">Cancel</button>
+                <button onclick="confirmDelete()"
+                    style="padding: 8px 16px; background-color: #e53e3e; color: white; border: none; border-radius: 4px; cursor: pointer;">Delete</button>
             </div>
         </div>
     </div>
@@ -263,6 +293,44 @@
         window.onclick = function (event) {
             if (event.target == modal) {
                 closeModal();
+            }
+            if (event.target == deleteModal) {
+                closeDeleteModal();
+            }
+        }
+
+        const deleteModal = document.getElementById('deleteModal');
+        let fileToDelete = '';
+        let isDeleteAll = false;
+
+        function showDeleteModal (hashId, fileName) {
+            document.getElementById('deleteFileName').textContent = fileName;
+            document.querySelector('#deleteModal h2').textContent = 'Confirm Delete';
+            document.querySelector('#deleteModal p:first-of-type').textContent = 'Are you sure you want to delete this file?';
+            fileToDelete = hashId;
+            isDeleteAll = false;
+            deleteModal.style.display = "block";
+        }
+
+        function showDeleteAllModal () {
+            document.getElementById('deleteFileName').textContent = 'All Files';
+            document.querySelector('#deleteModal h2').textContent = 'Confirm Delete All';
+            document.querySelector('#deleteModal p:first-of-type').textContent = 'Are you sure you want to delete all files? This action cannot be undone.';
+            isDeleteAll = true;
+            deleteModal.style.display = "block";
+        }
+
+        function closeDeleteModal () {
+            deleteModal.style.display = "none";
+            fileToDelete = '';
+            isDeleteAll = false;
+        }
+
+        function confirmDelete () {
+            if (isDeleteAll) {
+                window.location.href = '/delete/all';
+            } else if (fileToDelete) {
+                window.location.href = '/delete/' + fileToDelete;
             }
         }
     </script>

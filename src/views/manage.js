@@ -13,7 +13,7 @@ export const managePage = (images, page, totalPages) => {
       <td>${image.filename}</td>
       <td>${(image.size / 1024).toFixed(2)} KB</td>
       <td>${new Date(image.created_at).toLocaleString()}</td>
-      <td><a href="/delete/${image.hash_id}">Delete</a></td>
+      <td><a href="#" onclick="showDeleteModal('${image.hash_id}', '${image.original_filename || image.filename}'); return false;">Delete</a></td>
     </tr>
   `).join('');
 

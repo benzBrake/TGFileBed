@@ -32,8 +32,32 @@ export const handleDelete = async (c) => {
 };
 
 export const handleDeleteAll = async (c) => {
-  const { results: images } = await c.env.DB.prepare(`SELECT id, telegram_message_id FROM images`).all();
-
+  // 获取开始ID，如果没有提供则从1开始
+  const startId = parseInt(c.req.query('startId') || '1', 10);
+  
+  // 获取总记录数（所有图片）
+  const { total: totalImages } = await c.env.DB.prepare(`SELECT COUNT(*) as total FROM images`).first();
+  
+  // 获取已删除的记录数（ID小于开始ID的记录）
+  const { total: deletedCount } = await c.env.DB.prepare(
+    `SELECT COUNT(*) as total FROM images WHERE id < ?`
+  ).bind(startId).first();
+  
+  // 如果没有记录了，重定向到管理页面
+  if (deletedCount >= totalImages) {
+    return c.redirect('/manage');
+  }
+  
+  // 获取要删除的5条记录
+  const { results: images } = await c.env.DB.prepare(
+    `SELECT id, telegram_message_id FROM images WHERE id >= ? ORDER BY id ASC LIMIT 5`
+  ).bind(startId).all();
+  
+  if (images.length === 0) {
+    return c.redirect('/manage');
+  }
+  
+  // 删除Telegram消息
   const deletionPromises = images.map(image =>
     fetch(
       `https://api.telegram.org/bot${c.env.BOT_TOKEN}/deleteMessage`,
@@ -55,7 +79,39 @@ export const handleDeleteAll = async (c) => {
     }
   });
 
-  await c.env.DB.prepare(`DELETE FROM images`).run();
-
-  return c.redirect('/manage');
+  // 从数据库中删除记录
+  const idsToDelete = images.map(img => img.id);
+  await c.env.DB.prepare(
+    `DELETE FROM images WHERE id IN (${idsToDelete.map(() => '?').join(',')})`
+  ).bind(...idsToDelete).run();
+  
+  // 计算下一个开始ID
+  const nextStartId = images.length > 0 ? Math.max(...images.map(img => img.id)) + 1 : startId;
+  
+  // 计算当前批次的结束ID
+  const endId = images.length > 0 ? Math.max(...images.map(img => img.id)) : startId;
+  
+  // 计算已删除的数量（当前批次删除前的数量 + 当前批次删除的数量）
+  const newDeletedCount = deletedCount + images.length;
+  
+  // 添加日志来验证进度计算
+  console.log(`[DEBUG] 进度计算参数:`);
+  console.log(`[DEBUG] - 总图片数: ${totalImages}`);
+  console.log(`[DEBUG] - 已删除数量: ${deletedCount}`);
+  console.log(`[DEBUG] - 当前批次删除数: ${images.length}`);
+  console.log(`[DEBUG] - 新的已删除数量: ${newDeletedCount}`);
+  console.log(`[DEBUG] - 开始ID: ${startId}`);
+  console.log(`[DEBUG] - 结束ID: ${endId}`);
+  console.log(`[DEBUG] - 下一个开始ID: ${nextStartId}`);
+  console.log(`[DEBUG] - 当前进度百分比: ${totalImages > 0 ? Math.round((newDeletedCount / totalImages) * 100) : 0}%`);
+  
+  // 获取等待时间，默认为20秒
+  const waitTime = parseInt(c.env.DELETE_WAIT_TIME || '20', 10);
+  
+  // 导入等待页面
+  const { waitPage } = await import('../views/wait.js');
+  
+  // 返回等待页面，现在包含结束ID
+  return c.html(waitPage(newDeletedCount, totalImages, nextStartId, endId, waitTime)
+    .replace('{siteTitle}', c.env.SITE_TITLE || 'TGFileBed'));
 };

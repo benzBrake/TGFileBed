@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{siteTitle} - Deleting Files</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon"
+        href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAADM0lEQVQ4TyVTW0hVaRRe67/sffaJgR6yptLQRjCzqCwLJyyDKSfoYlHUBPMyPRQ9BTUPE9SLXTCDYuhKlxGmh2pImIEGIyslLLQ4qY0e7KLYaJZ2VMRtdjln9e19Nnud9a/9r/V93/r/dbjv/wFpqB6X7thnViktWmt2rBXtKFaahZWwURo/eIPYEHuukenzhPPWpHz+63iXPKv7SD2JZnoz1EpJ+UJMQqwZnggIxIwYa1ZMrvVoXk4xLchfSTnfA6Dyp7h0dD6Rh50XkMMiyBVOCZFiACEUxoOYUW9Es2ENRdt+3M9FRUt8rijvkPqWy9Qz2AyOgDIoQX7IGZYBSsMUoZiUCtaaCvNLacuGnWmAu7Fz0vu+BczQTikwBz2ghLUEZUoZUSodg521NlKQu5y3bQwB4lIXO0u9iVjIVvH7PopEXPCrUEXdrUZaVrKIJk/+hpLJFB379Qp2DBXkLqNN635OAwQK+oZbcfqubP9lPZeVl4S3UVvzQKbNzODFxQVS93cTT/ifpLamia1yJH/2El6/dksaoP7pJdzAf+gP/cIOnNgdNEFVB6rp6Pm9FJ3k0YPaFhrsH6FnTa/JaIfychbS2jXrfD68KS4NLX9I/3A7elUh86GTe2R87BOfrrghZ27+xlEvKgN9w9z66JXUXo9hLhzJzc7n1T+UQQEAGtv+pHejHWA3hE06eGoXjSR8ulR5i642HKKLx/6lx/dektaWLDthznfZc6h0VUmgoEMetl+T96MvMGmYQOXyjl1lMjI0wfX/tMm+yq1cXXVfPox+QakrkI+8qGTPms3LSwt9PgIFzfGblBjrQm8RoLshk1YWigJGlxztklXBHgzrwGdlZlHRijwo2ByXtue3JTHWjft1cQYWPbqCk2arI/Au4ojgG7wXegufNetbnl88w+eqHZ3S3fOCugYaweKETI72yMI0YhSFqgyUWB0lB/uWPcornEqZcz2fa051S/udpIxMvOYPH4fAYHAbDpSY8LSNsph9KNIuuxoKjOWM6Z5kzHR5xuKkz2/7B+XRjXHqbcMApzBjBrOg8VcyBAUMS38zNm3WIYpMYpqSm6LMpUn/K4oHR0U6kRSQAAAAAElFTkSuQmCC" />
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #5a67d8;
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-container {
+            margin: 2rem 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background-color: #e2e8f0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress {
+            height: 100%;
+            background-color: #5a67d8;
+            border-radius: 15px;
+            transition: width 0.3s ease;
+        }
+
+        .countdown {
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            color: #4a5568;
+        }
+
+        .status {
+            margin: 1rem 0;
+            font-size: 1.1rem;
+        }
+
+        .spinner {
+            border: 4px solid rgba(90, 103, 216, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid #5a67d8;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 1rem auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Deleting Files</h1>
+        <div class="status">
+            <p>Deleted {deletedCount} of {totalCount} files</p>
+        </div>
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress" style="width: {progressPercent}%"></div>
+            </div>
+        </div>
+        <div class="spinner"></div>
+        <div class="countdown">
+            <p>Next batch will be deleted in <span id="timer">{waitTime}</span> seconds</p>
+        </div>
+    </div>
+
+    <script>
+        let seconds = { waitTime };
+        const timerElement = document.getElementById('timer');
+
+        // 添加前端日志来验证进度条显示
+        console.log('[DEBUG] 前端进度条验证:');
+        console.log('[DEBUG] - waitTime:', seconds);
+        console.log('[DEBUG] - nextStartId:', '{nextStartId}');
+        console.log('[DEBUG] - endId:', '{endId}');
+        console.log('[DEBUG] - 进度条元素:', document.querySelector('.progress'));
+
+        // 检查进度条宽度是否正确设置
+        const progressBar = document.querySelector('.progress');
+        if (progressBar) {
+            const computedStyle = window.getComputedStyle(progressBar);
+            console.log('[DEBUG] - 进度条计算宽度:', computedStyle.width);
+            console.log('[DEBUG] - 进度条内联样式宽度:', progressBar.style.width);
+        }
+
+        const countdown = setInterval(() => {
+            seconds--;
+            timerElement.textContent = seconds;
+
+            if (seconds <= 0) {
+                clearInterval(countdown);
+                window.location.href = '/delete/all?startId={nextStartId}';
+            }
+        }, 1000);
+    </script>
+</body>
+
+</html>

@@ -35,7 +35,8 @@ PASSWORD = ""
 BOT_TOKEN = ""
 CHAT_ID = ""
 MAX_FILE_SIZE = "20971520" # 20MB
-SITE_TITLE=""
+SITE_TITLE="虚假的图床"
+WAIT_TIME = "20"
 
 # Configuration for the 'dev' environment (local development)
 [env.dev]

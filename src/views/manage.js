@@ -6,7 +6,7 @@ export const managePage = (images, page, totalPages) => {
       <td>
         ${image.isImage ?
           `<img src="/images/${image.filename}" alt="${image.original_filename}" class="thumbnail" onclick="showModal('${image.filename}', '${image.original_filename}', ${image.isImage})">` :
-          `<div class="file-ext" onclick="showModal('${image.filename}', '${image.original_filename}', ${image.isImage})">${image.filename.split('.').pop().toUpperCase()}</div>`
+          `<div class="file-ext" onclick="showModal('${image.filename}', '${image.original_filename}', ${image.isImage})">${image.ext.toUpperCase()}</div>`
         }
       </td>
       <td>${image.original_filename || 'N/A'}</td>
@@ -18,9 +18,9 @@ export const managePage = (images, page, totalPages) => {
   `).join('');
 
   const pagination = `
-    ${page > 1 ? `<a href="/manage?page=${page - 1}">Previous</a>` : '<span>Previous</span>'}
+    ${page > 1 ? `<a href="/manage.html?page=${page - 1}">Previous</a>` : '<span>Previous</span>'}
     <span>Page ${page} of ${totalPages}</span>
-    ${page < totalPages ? `<a href="/manage?page=${page + 1}">Next</a>` : '<span>Next</span>'}
+    ${page < totalPages ? `<a href="/manage.html?page=${page + 1}">Next</a>` : '<span>Next</span>'}
   `;
 
   return manageHTML

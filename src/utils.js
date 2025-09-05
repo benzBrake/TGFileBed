@@ -20,7 +20,7 @@ export const getFileExtension = (filename) => {
 // Get file extension from MIME type
 export const getExtensionFromMimeType = (mimeType) => {
   if (!mimeType || typeof mimeType !== 'string') return '';
-  
+
   const mimeToExtension = {
     // Images
     'image/jpeg': 'jpg',
@@ -32,7 +32,7 @@ export const getExtensionFromMimeType = (mimeType) => {
     'image/bmp': 'bmp',
     'image/tiff': 'tiff',
     'image/x-icon': 'ico',
-    
+
     // Documents
     'application/pdf': 'pdf',
     'application/msword': 'doc',
@@ -42,7 +42,7 @@ export const getExtensionFromMimeType = (mimeType) => {
     'application/vnd.ms-powerpoint': 'ppt',
     'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'pptx',
     'application/vnd.ms-office': 'doc', // 通用 Office 文档
-    
+
     // Text files
     'text/plain': 'txt',
     'text/plain; charset=utf-8': 'txt',
@@ -53,14 +53,14 @@ export const getExtensionFromMimeType = (mimeType) => {
     'text/javascript': 'js',
     'application/json': 'json',
     'application/xml': 'xml',
-    
+
     // Audio
     'audio/mpeg': 'mp3',
     'audio/wav': 'wav',
     'audio/ogg': 'ogg',
     'audio/aac': 'aac',
     'audio/flac': 'flac',
-    
+
     // Video
     'video/mp4': 'mp4',
     'video/mpeg': 'mpeg',
@@ -68,41 +68,41 @@ export const getExtensionFromMimeType = (mimeType) => {
     'video/x-msvideo': 'avi',
     'video/x-ms-wmv': 'wmv',
     'video/webm': 'webm',
-    
+
     // Archives
     'application/zip': 'zip',
     'application/x-rar-compressed': 'rar',
     'application/x-tar': 'tar',
     'application/x-7z-compressed': '7z',
     'application/gzip': 'gz',
-    
+
     // Executables
     'application/x-elf-executable': 'elf',
     'application/x-dosexec': 'exe',
-    
+
     // Other
     'application/octet-stream': 'bin'
   };
-  
+
   return mimeToExtension[mimeType.toLowerCase()] || '';
 };
 
 // 从文件内容获取MIME类型
 export const getMimeTypeFromFileContent = async (file) => {
   if (!file || !(file instanceof File)) return '';
-  
+
   // 如果File对象已经有type属性且不为空，优先使用
   if (file.type && file.type !== 'application/octet-stream') {
     return file.type;
   }
-  
+
   // 读取文件前几个字节来检测MIME类型
   try {
     const buffer = await file.slice(0, 4).arrayBuffer();
     const arr = new Uint8Array(buffer);
-    
+
     // 常见文件类型的魔数检测
-    
+
     // 图片格式
     if (arr[0] === 0xFF && arr[1] === 0xD8 && arr[2] === 0xFF) {
       return 'image/jpeg';
@@ -125,7 +125,7 @@ export const getMimeTypeFromFileContent = async (file) => {
     if (arr[0] === 0x00 && arr[1] === 0x00 && arr[2] === 0x01 && arr[3] === 0x00) {
       return 'image/x-icon';
     }
-    
+
     // WebP 文件的魔数检测: "RIFF" + 4字节文件大小 + "WEBP"
     if (arr[0] === 0x52 && arr[1] === 0x49 && arr[2] === 0x46 && arr[3] === 0x46) {
       // 读取更多字节来确认是 WebP 格式
@@ -139,7 +139,7 @@ export const getMimeTypeFromFileContent = async (file) => {
         console.error('Error detecting WebP format:', error);
       }
     }
-    
+
     // 文档格式
     if (arr[0] === 0x25 && arr[1] === 0x50 && arr[2] === 0x44 && arr[3] === 0x46) {
       return 'application/pdf';
@@ -148,7 +148,7 @@ export const getMimeTypeFromFileContent = async (file) => {
       // 可能是 Microsoft Office 文档 (DOC, XLS, PPT)
       return 'application/vnd.ms-office';
     }
-    
+
     // 压缩文件格式
     if (arr[0] === 0x50 && arr[1] === 0x4B && (arr[2] === 0x03 || arr[2] === 0x05 || arr[2] === 0x07)) {
       return 'application/zip';
@@ -165,7 +165,7 @@ export const getMimeTypeFromFileContent = async (file) => {
     if (arr[0] === 0x75 && arr[1] === 0x73 && arr[2] === 0x74 && arr[3] === 0x61) {
       return 'application/x-tar';
     }
-    
+
     // 音频格式
     if (arr[0] === 0x49 && arr[1] === 0x44 && arr[2] === 0x33) {
       return 'audio/mpeg';
@@ -188,7 +188,7 @@ export const getMimeTypeFromFileContent = async (file) => {
     if (arr[0] === 0x66 && arr[1] === 0x4C && arr[2] === 0x61 && arr[3] === 0x43) {
       return 'audio/flac';
     }
-    
+
     // 视频格式
     if (arr[0] === 0x00 && arr[1] === 0x00 && arr[2] === 0x00 && arr[3] === 0x18) {
       return 'video/mp4';
@@ -202,7 +202,7 @@ export const getMimeTypeFromFileContent = async (file) => {
     if (arr[0] === 0x00 && arr[1] === 0x00 && arr[2] === 0x00 && arr[3] === 0x14) {
       return 'video/mpeg';
     }
-    
+
     // 可执行文件
     if (arr[0] === 0x7F && arr[1] === 0x45 && arr[2] === 0x4C && arr[3] === 0x46) {
       return 'application/x-elf-executable';
@@ -210,7 +210,7 @@ export const getMimeTypeFromFileContent = async (file) => {
     if (arr[0] === 0x4D && arr[1] === 0x5A) {
       return 'application/x-dosexec';
     }
-    
+
     // 文本文件 (不太准确，但可以作为最后手段)
     if (arr[0] === 0xEF && arr[1] === 0xBB && arr[2] === 0xBF) {
       return 'text/plain; charset=utf-8';
@@ -221,7 +221,7 @@ export const getMimeTypeFromFileContent = async (file) => {
     if (arr[0] === 0xFF && arr[1] === 0xFE) {
       return 'text/plain; charset=utf-16le';
     }
-    
+
     // 如果无法识别，返回通用类型
     return 'application/octet-stream';
   } catch (error) {
@@ -229,3 +229,5 @@ export const getMimeTypeFromFileContent = async (file) => {
     return 'application/octet-stream';
   }
 };
+
+export const extIsImage = (image) => /\.(bmp|jpe?g|png|gif|svg|webp|ico|tiff)$/i.test(image.filename);

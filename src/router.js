@@ -6,6 +6,7 @@ import { handleDelete, handleDeleteAll } from './handlers/delete';
 import { handleFile } from './handlers/image';
 import { uploadPage } from './views/upload';
 import { managePage } from './views/manage';
+import { extIsImage } from './utils';
 
 export const router = new Hono();
 
@@ -28,14 +29,25 @@ router.post('/upload', basicAuth, handleUpload);
 router.get('/list', basicAuth, handleList);
 
 // Page for managing images, protected by basic auth
-router.get('/manage', basicAuth, async (c) => {
+router.get('/manage.html', basicAuth, async (c) => {
     const page = parseInt(c.req.query('page') || '1', 10);
     const limit = 20;
     const offset = (page - 1) * limit;
 
-    const { results } = await c.env.DB.prepare(
+    let { results } = await c.env.DB.prepare(
         `SELECT * FROM images ORDER BY created_at DESC LIMIT ? OFFSET ?`
     ).bind(limit, offset).all();
+
+    results = results.map((row) => {
+        row.isImage = extIsImage(row.filename);
+        let e = row.filename.split('.');
+        if (e.length > 1) {
+            row.ext = e[e.length - 1];
+        } else {
+            row.ext = '';
+        }
+        return row;
+    });
 
     const { total } = await c.env.DB.prepare(`SELECT COUNT(*) as total FROM images`).first();
     const totalPages = Math.ceil(total / limit);

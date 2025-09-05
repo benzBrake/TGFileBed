@@ -256,16 +256,25 @@
     <script>
         const modal = document.getElementById('linkModal');
 
-        function showModal (filename, original_filename, isImage) {
+        function showModal (filename, original_filename) {
             const baseUrl = window.location.origin;
-            const fileUrl = baseUrl + '/' + (isImage ? 'images' : 'file') + '/' + filename;
+
+            // 直接根据文件名后缀判断是否为图片
+            const isImage = /\.(bmp|jpe?g|png|gif|svg|webp|ico|tiff)$/i.test(filename);
+
+            const fileUrl = baseUrl + '/file/' + filename;
 
             document.getElementById('pureLink').value = fileUrl;
 
             let html, bbcode, markdown;
             if (isImage) {
-                html = '<a href="' + fileUrl + '"><img src="' + fileUrl + '" alt="' + original_filename + '" /></a>';
-                bbcode = '[url=' + fileUrl + '][img]' + fileUrl + '[/img][/url]';
+                // 图片专属的HTML格式 - 简洁版
+                html = '<img src="' + fileUrl + '" alt="' + original_filename + '" />';
+
+                // 图片专属的BBCode格式 - 简洁版
+                bbcode = '[img]' + fileUrl + '[/img]';
+
+                // 图片专属的Markdown格式 - 简洁版
                 markdown = '![' + original_filename + '](' + fileUrl + ')';
             } else {
                 html = '<a href="' + fileUrl + '">' + original_filename + '</a>';

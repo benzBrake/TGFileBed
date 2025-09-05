@@ -1,3 +1,5 @@
+import { extIsImage } from "../utils";
+
 export const handleList = async (c) => {
   const page = parseInt(c.req.query('page') || '1', 10);
   const limit = parseInt(c.req.query('limit') || '20', 10);
@@ -12,10 +14,10 @@ export const handleList = async (c) => {
 
   return c.json({
     images: results.map(image => {
-      const isImage = /\.(jpe?g|png|gif|bmp|webp)$/i.test(image.filename);
+
       return {
         ...image,
-        isImage,
+        isImage : extIsImage(image.filename),
         url: `${new URL(c.req.url).origin}/${isImage ? 'images' : 'file'}/${image.filename}`
       };
     }),

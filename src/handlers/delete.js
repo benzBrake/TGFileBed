@@ -94,16 +94,6 @@ export const handleDeleteAll = async (c) => {
   // 计算已删除的数量（当前批次删除前的数量 + 当前批次删除的数量）
   const newDeletedCount = deletedCount + images.length;
   
-  // 添加日志来验证进度计算
-  console.log(`[DEBUG] 进度计算参数:`);
-  console.log(`[DEBUG] - 总图片数: ${totalImages}`);
-  console.log(`[DEBUG] - 已删除数量: ${deletedCount}`);
-  console.log(`[DEBUG] - 当前批次删除数: ${images.length}`);
-  console.log(`[DEBUG] - 新的已删除数量: ${newDeletedCount}`);
-  console.log(`[DEBUG] - 开始ID: ${startId}`);
-  console.log(`[DEBUG] - 结束ID: ${endId}`);
-  console.log(`[DEBUG] - 下一个开始ID: ${nextStartId}`);
-  console.log(`[DEBUG] - 当前进度百分比: ${totalImages > 0 ? Math.round((newDeletedCount / totalImages) * 100) : 0}%`);
   
   // 获取等待时间，默认为20秒
   const waitTime = parseInt(c.env.DELETE_WAIT_TIME || '20', 10);

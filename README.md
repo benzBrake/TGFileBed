@@ -39,16 +39,16 @@ For detailed instructions on creating the database, running migrations, and depl
 
 After deployment, you can access your filebed at the URL provided by Wrangler.
 
-## API Endpoints
-
+## Web Interface
 -   `GET /`: The file upload page.
+-   `GET /manage.html`: The image management page with pagination.
+
+## API Endpoints
 -   `POST /upload`: The file upload API endpoint.
 -   `GET /list`: Lists all uploaded images (JSON response).
--   `GET /manage`: The image management page with pagination.
 -   `GET /delete/:hashid`: Deletes a specific image.
 -   `GET /delete/all`: Deletes all images.
--   `GET /images/:filename`: Serves the uploaded image.
-
+-   `GET /file/:filename`: Serves the uploaded image.
 All management endpoints (`/`, `/upload`, `/list`, `/manage`, `/delete/*`) are protected by Basic Authentication.
 
 ## Support

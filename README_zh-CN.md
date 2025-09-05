@@ -35,7 +35,21 @@
     npx wrangler login
     ```
 
-关于如何创建
+有关创建数据库、运行迁移和部署应用程序的详细说明，请参阅[部署指南](DEPLOYMENT_zh-CN.md)。
+
+部署完成后，您可以通过 Wrangler 提供的 URL 访问您的图床服务。
+
+## 网页界面
+-   `GET /`: 文件上传页面。
+-   `GET /manage.html`: 带有分页功能的图片管理页面。
+
+## API 端点
+-   `POST /upload`: 文件上传 API 端点。
+-   `GET /list`: 列出所有上传的图片（JSON 响应）。
+-   `GET /delete/:hashid`: 删除特定图片。
+-   `GET /delete/all`: 删除所有图片。
+-   `GET /file/:filename`: 提供上传的图片。
+所有管理端点（`/`, `/upload`, `/list`, `/manage`, `/delete/*`）都受基本身份认证保护。
 
 ## 支持
 

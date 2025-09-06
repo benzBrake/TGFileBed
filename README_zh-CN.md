@@ -2,6 +2,8 @@
 
 本项目提供了一个自托管的图床服务，使用 Telegram 作为存储，运行在 Cloudflare Workers 上，并以 D1 作为数据库。
 
+![TGFileBed 首页](images/TGFileBed_Homepage.png)
+
 ## 功能特性
 
 - 通过网页界面和 API 上传文件

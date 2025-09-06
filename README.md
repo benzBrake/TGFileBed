@@ -2,6 +2,8 @@
 
 This project provides a self-hosted image hosting service using Telegram as storage, running on Cloudflare Workers with D1 as the database.
 
+![TGFileBed Homepage](images/TGFileBed_Homepage.png)
+
 ## Features
 
 - File upload via web interface and API

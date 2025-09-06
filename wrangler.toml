@@ -8,6 +8,7 @@ route = { pattern = "your_domain.tld/*", zone_name = "your_domain.tld" }
 [[d1_databases]]
 binding = "DB"
 database_name = "tg-filebed-db"
+database_id = "1b06b8a4-2c32-40b7-827c-ffda4df5d0f9"
 
 # D1 database binding for production environment
 [env.production]
@@ -31,13 +32,13 @@ database_name = "tg-filebed-db"
 # These variables are accessible in all environments unless overridden.
 # For local development, define these in the `.dev.vars` file.
 # For production, set them as secrets.
-USERNAME = ""
-PASSWORD = ""
-BOT_TOKEN = ""
-CHAT_ID = ""
+USERNAME="confiding"
+PASSWORD="icky-online-prologue-operating-fineness-wrist"
+BOT_TOKEN="6929512359:AAGjqhTeqQX4A6yeDRty1Bg8KUIAuee3tcI"
+CHAT_ID="-1002129455327"
 MAX_FILE_SIZE = "20971520" # 20MB
 SITE_TITLE="虚假的图床"
-WAIT_TIME = "20"
+WAIT_TIME = "8"
 
 # Configuration for the 'dev' environment (local development)
 [env.dev]

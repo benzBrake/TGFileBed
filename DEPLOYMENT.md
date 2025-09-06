@@ -5,6 +5,7 @@ This guide provides step-by-step instructions for deploying the TG-FileBed appli
 ## Prerequisites
 
 - You have a Cloudflare account.
+- You have a domain name that can be bound to Cloudflare.
 - You have `npm` and `npx` installed.
 - You have authenticated Wrangler with your Cloudflare account (`npx wrangler login`).
 
@@ -53,13 +54,15 @@ You must add the unique `database_id` for each database to your `wrangler.toml` 
     Copy the "UUID" value from the output.
 
 3.  **Update `wrangler.toml`:**
-    Open the `wrangler.toml` file and fill in the `database_id` fields for both the `production` and `dev` environments.
+    Open the `wrangler.toml` file and fill in the `database_id` fields for both the `production` and `dev` environments. Modify other configurations (USERNAME, PASSWORD, BOT_TOKEN, CHAT_ID, MAX_FILE_SIZE, SITE_TITLE, WAIT_TIME) according to your needs. Modify the `route` configuration to use your domain name.
 
     ```toml
     # wrangler.toml
-
+    
     # ... other configurations ...
-
+    
+    route = { pattern = "your_domain.tld/*", zone_name = "your_domain.tld" }
+    
     [env.production]
     [[env.production.d1_databases]]
     binding = "DB"
@@ -67,9 +70,24 @@ You must add the unique `database_id` for each database to your `wrangler.toml` 
     # You must specify the database_id for deployments.
     # Run `npx wrangler d1 info tg-filebed-db` to get the id.
     database_id = "YOUR_PRODUCTION_DATABASE_ID" # <-- Paste the ID here
+    
+    # ... other configurations ...
+    
+    [vars]
+    # These variables are accessible in all environments unless overridden.
+    # For local development, define these in the `.dev.vars` file.
+    # For production, set them as secrets.
+    USERNAME = ""
+    PASSWORD = ""
+    BOT_TOKEN = ""
+    CHAT_ID = ""
+    MAX_FILE_SIZE = "20971520" # 20MB
+    SITE_TITLE="Fake Image Host"
+    WAIT_TIME = "20"
+
 
     # ... other configurations ...
-
+    
     [env.dev]
     [[env.dev.d1_databases]]
     binding = "DB"

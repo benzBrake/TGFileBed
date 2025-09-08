@@ -28,7 +28,7 @@ export const handleDelete = async (c) => {
 
   await c.env.DB.prepare(`DELETE FROM images WHERE id = ?`).bind(image.id).run();
 
-  return c.redirect('/manage');
+  return c.redirect('/manage.html');
 };
 
 export const handleDeleteAll = async (c) => {
@@ -45,7 +45,7 @@ export const handleDeleteAll = async (c) => {
   
   // 如果没有记录了，重定向到管理页面
   if (deletedCount >= totalImages) {
-    return c.redirect('/manage');
+    return c.redirect('/manage.html');
   }
   
   // 获取要删除的5条记录
@@ -54,7 +54,7 @@ export const handleDeleteAll = async (c) => {
   ).bind(startId).all();
   
   if (images.length === 0) {
-    return c.redirect('/manage');
+    return c.redirect('/manage.html');
   }
   
   // 删除Telegram消息
